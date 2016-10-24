@@ -86,7 +86,7 @@ public class ActiveRecords extends Conexao {
     
     public void Delete(String idRegistro) {
         
-        String query = "DELETE FROM " + Tabela + " WHERE" + campo + " = " + idRegistro;
+        String query = "DELETE FROM " + Tabela + " WHERE Usuarios_ID = " + idRegistro;
         
         try {
         
