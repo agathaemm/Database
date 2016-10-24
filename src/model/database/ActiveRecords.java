@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,13 +13,35 @@ import java.sql.Statement;
  */
 public class ActiveRecords extends Conexao {
     
+    private String Tabela = "";
+    private ArrayList<String> campo = new ArrayList();
+    private String Value;
+    
     public ActiveRecords(String h, String u, String d, String p) {
         super(h, u, d, p);
+        
     }
+
+    public String getTabela() {
+        return Tabela;
+    }
+
+    public void setTabela(String Tabela) {
+        this.Tabela = Tabela;
+    }
+
+    public void setCampo(ArrayList<String> campo) {
+        this.campo = campo;
+    }
+
+    public ArrayList<String> getCampo() {
+        return campo;
+    }
+ 
     
     public void Get() {
         
-        String query = "SELECT * FROM usuarios";
+        String query = "SELECT * FROM " + Tabela;
         
         try {
             
@@ -27,18 +50,33 @@ public class ActiveRecords extends Conexao {
             ResultSet result = st.executeQuery(query);
             
             while ( result.next() ) {
-                String Nome      = result.getString("Nome");
-                String Sobrenome = result.getString("Sobrenome");
-                String Apelido   = result.getString("Apelido");
-                String Telefone  = result.getString("Telefone");
+                    
+               for (String c : campo) {
+                   
+                   ArrayList<String> ct = new ArrayList();
+                   
+                   String cmp;
+                   cmp = result.getString(c);
+                   ct.add(cmp);
+                   
+                   System.out.println(c + " : " + cmp);
+                   
+               }
+               
+                System.out.println("------------------------------");
+               
+                //String Nome      = result.getString("Nome");
+                //String Sobrenome = result.getString("Sobrenome");
+                //String Apelido   = result.getString("Apelido");
+                //String Telefone  = result.getString("Telefone");
             
-                System.out.println("Nome     : " + Nome);
-                System.out.println("Sobrenome: " + Sobrenome);
-                System.out.println("Apelido  : " + Apelido);
-                System.out.println("Telefone : " + Telefone);
+                //System.out.println("Nome     : " + Nome);
+                //System.out.println("Sobrenome: " + Sobrenome);
+                //System.out.println("Apelido  : " + Apelido);
+                //System.out.println("Telefone : " + Telefone);
+                
+               
             }
-            
-            
             
         } catch ( SQLException e ) {
             System.out.println(e);
@@ -48,7 +86,7 @@ public class ActiveRecords extends Conexao {
     
     public void Delete(String idRegistro) {
         
-        String query = "DELETE FROM usuarios WHERE Usuarios_ID = " + idRegistro;
+        String query = "DELETE FROM " + Tabela + " WHERE" + campo + " = " + idRegistro;
         
         try {
         
@@ -68,7 +106,7 @@ public class ActiveRecords extends Conexao {
     public void Insert(String n, String s, String t, String a) {
         
                 
-        String query = "INSERT INTO usuarios" + "(Nome, Sobrenome, Telefone, Apelido)" + "VALUES(?,?,?,?)";
+        String query = "INSERT INTO" + Tabela + "(Nome, Sobrenome, Telefone, Apelido) VALUES(?,?,?,?)";
         
         try {
             
@@ -92,29 +130,35 @@ public class ActiveRecords extends Conexao {
     
     public void Update() {
         
-        String query = "UPDATE usuarios SET Nome = ?, Sobrenome = ?, Telefone = ?, Apelido = ? WHERE Usuarios_ID = ?";
+        //String query = "UPDATE" + Tabela + "SET Nome = ?, Sobrenome = ?, Telefone = ?, Apelido = ? WHERE Usuarios_ID = ?";
+        for(String c : campo) {
+
+                String query = "UPDATE" + Tabela + "SET" + c + " = " + "?";
+
+            try {
+
+                PreparedStatement st = this.Conectar().prepareStatement(query);
+
+                for(int x = 0; x < campo.size(); x++) {
+
+                    st.setString(x+1, "Rebeca");
+
+                }
+
+                st.execute();
+
+                System.out.println("Modificaçoes efetuadas com sucesso");
+
+            }catch (SQLException e) {
+
+                System.out.println(e);
+
+            }
         
-        try {
-                    
-            PreparedStatement st = this.Conectar().prepareStatement(query);
-        
-            st.setString(1, "Rebeca");
-            st.setString(2, "Magalhães");
-            st.setString(3, "(15)3017-6699");
-            st.setString(4, "Rê");
-            st.setString(5, "6");
-        
-            st.execute();
-            
-            System.out.println("Modificaçoes efetuadas com sucesso");
-        
-        }catch (SQLException e) {
-            
-            System.out.println(e);
-            
         }
      
     }
+
     
 }
 
