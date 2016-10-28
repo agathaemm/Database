@@ -39,7 +39,7 @@ public class ActiveRecords extends Conexao {
     }
  
     
-    public void Get() {
+    public void Select() {
         
         String query = "SELECT * FROM " + Tabela;
         

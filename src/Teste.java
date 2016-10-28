@@ -13,47 +13,86 @@ import model.database.Conexao;
  * @author leohilariao
  */
 public class Teste {
+    
+    
+    //---------------MENU-----------------//
+        public static void Menu(){
+            
+            System.out.println("1-Select");
+            System.out.println("2-Delete");
+            System.out.println("3-Insert");
+            System.out.println("4-Update");
+            System.out.println("5-Sair");
+            System.out.print("Digite a opcao: ");
+            
+        }
+       
+   
     public static void main(String[] args){
         
-        
         ActiveRecords c = new ActiveRecords("127.0.0.1","root","rocket","");
-        ArrayList<String> camp = new ArrayList();
-        String campo;
-        String continua;
-        String reg;
         
+        int opcao;
         Scanner entrada = new Scanner(System.in);
         
-        //seta o nome da tabela
-        c.setTabela("Usuarios");
-        
-        //SETA OS CAMPOS DA TABELA 
-        /*do {
+        do {
             
-            System.out.println("Digite o campo: ");
-            campo = entrada.next();
-            camp.add(campo);
-            c.setCampo(camp);
+            Menu();
+            opcao = entrada.nextInt();
             
-            System.out.println("Deseja continuar(s/n): ");
-            continua = entrada.next();
+            switch (opcao) {
+                case 1:
+                    
+                    c.setTabela("Usuarios");
+                    
+                    ArrayList<String> camp = new ArrayList();
+                    String campo;
+                    String continua;
+                    
+                    do {
             
-        }while(continua.equals("sim"));
+                            System.out.println("Digite o campo: ");
+                            campo = entrada.next();
+                            camp.add(campo);
+                            c.setCampo(camp);
+
+                            System.out.println("Deseja continuar(s/n): ");
+                            continua = entrada.next();
+            
+                    }while(continua.equals("sim"));
+                    c.Select();
+                    break;
+                 
+                case 2 :
+                    
+                    c.setTabela("usuarios");
+                    c.Delete("1");
+                    break;
+                    
+                case 3: 
+                    
+                    c.setTabela("usuarios");
+                    c.Insert("Marifanza", "Magalhães", "(15)3017-6699", "Mara");
+                    break;
+                    
+                case 4:
+                    
+                    c.setTabela("usuarios");
+                    c.Update(); 
+                    break;
+                    
+                default:
+                    System.out.println("Opcao invalida");
+                    break;
+                           
+            }
         
-        c.Get();
-        **/
         
-        //DELETA UM REGISTRO DA TABELA
-        System.out.println("Digite o registro q deseja deletar: ");
-        reg = entrada.next();
-        
-        c.Delete(reg);
-        
-        //System.out.println("---->" + c.getCampo());
-        
-        
-        
-        //c.Insert("Marifanza", "Magalhães", "(15)3017-6699", "Mara");
-        //c.Update();
-    }
+        }while (opcao != 0);
+
+    }  
+
 }
+        
+        
+
